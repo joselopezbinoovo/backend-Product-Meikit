@@ -1,0 +1,34 @@
+{
+  "name": "backend-product-meikit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start":"nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joselopezbinoovo/backend-Product-Meikit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joselopezbinoovo/backend-Product-Meikit/issues"
+  },
+  "homepage": "https://github.com/joselopezbinoovo/backend-Product-Meikit#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.1",
+    "socket.io": "^4.6.1"
+  }
+}
