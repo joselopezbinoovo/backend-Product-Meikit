@@ -34,10 +34,12 @@ app.use(express.json ());
 const entityRouter = require('./routes/entityRoute'); 
 const entityConfigRouter = require('./routes/entityConfig');
 const usersRouter = require('./routes/userRoutes');
+const roleRouter = require('./routes/rolesRoutes')
 
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/users",usersRouter)
+app.use("/api/rol",roleRouter)
 //Socket.io
 
 
