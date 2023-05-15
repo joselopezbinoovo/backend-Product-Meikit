@@ -9,7 +9,7 @@ const roles = sequelize.define("Roles", {
         type: DataTypes.INTEGER
       },
       role_name: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
       },
   },{
     timestamps:false,
