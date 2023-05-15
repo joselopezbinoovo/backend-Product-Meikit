@@ -31,9 +31,11 @@ app.use(express.json ());
 //RUTAS 
 
 /* app.use('ruta') */
+const entityRouter = require('./routes/entityRoute'); 
+const entityConfigRouter = require('./routes/entityConfig');
 
-
-
+app.use("/api/entity",entityRouter);
+app.use("/api/entityConfig",entityConfigRouter);
 //Socket.io
 
 

@@ -21,7 +21,9 @@ const entityConfig = sequelize.define("EntityConfig", {
   });
 
   entity.hasOne(entityConfig, {
-  foreignKey: 'entity_id'});
+  foreignKey: 'entity_id',
+  onDelete:'CASCADE'    
+});
   entityConfig.belongsTo(entity, {
   foreignKey: 'entity_id'
 });
