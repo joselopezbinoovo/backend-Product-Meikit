@@ -6,7 +6,7 @@ const entityConfig = require('./models/EntityConfigModel')
 const entity = require('./models/EntityModel');
 const role = require('./models/RolesModel')
 const user = require('./models/UsersModel')
-const valorPLC = require('./models/VariablesPLCModel')
+const valorPLC = require('./models/ValorPLCModel')
 const valariables = require('./models/VariablesModel')
 
 //Sequelize 
@@ -24,7 +24,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // PARSEO DE JSON 
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json ());
 
 
@@ -35,11 +35,14 @@ const entityRouter = require('./routes/entityRoute');
 const entityConfigRouter = require('./routes/entityConfig');
 const usersRouter = require('./routes/userRoutes');
 const roleRouter = require('./routes/rolesRoutes')
+const variable = require('./routes/variablesRoutes');
 
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/users",usersRouter)
 app.use("/api/rol",roleRouter)
+app.use("/api/variable",variable)
+
 //Socket.io
 
 

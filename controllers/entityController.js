@@ -1,6 +1,6 @@
 const Entity = require('../models/EntityModel'); 
 const EntityConfig = require('../models/EntityConfigModel');
-
+const Variable = require('../models/VariablesModel')
 
 const createEntity = async( req,res) => {
     try {
@@ -9,7 +9,7 @@ const createEntity = async( req,res) => {
         const createNewEntity = await Entity.create({
             desc_entity:body.desc_entity,
             ip_entity:body.ip_entity,
-            image:body.ip_entity,
+            image:body.image,
             EntityConfig:{
                 color:body.entityConfig.color
             }
@@ -34,13 +34,13 @@ const updateEntity = async( req,res) => {
         const id = req.params.id
         const updateEntity = await Entity.update({
     
-            desc_entity:'gsgsgsd',
-            ip_entity:122134,
-            image:'ggdsgsdgsd'
+            desc_entity:body.desc_entity,
+            ip_entity:body.ip_entity,
+            image:body.image
         },{where:{id:id}})
 
         const updateEntityConfig = await EntityConfig.update({
-            color:'green'
+            color:body.color
         }, {where:{id:id}})
 
         res.status(200).json({
@@ -86,8 +86,11 @@ const getAll = async(req,res)=> {
             order: [["id", "ASC"]],
             include: [ 
                 {
-                  model: EntityConfig ,
+                    model: EntityConfig ,
                 },
+                { 
+                    model:Variable
+                }
               ],
         });
         res.status(200).json({
@@ -108,6 +111,9 @@ const getOne = async(req,res)=> {
                 {
                   model: EntityConfig ,
                 },
+                {
+                    model:Variable
+                }
               ],
         }, {where:{id:id}});
         res.status(200).json({

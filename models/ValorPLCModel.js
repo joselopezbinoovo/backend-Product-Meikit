@@ -1,8 +1,9 @@
 const {DataTypes}= require('sequelize');
 const sequelize = require('../db/connection');
+const variables = require('./VariablesModel')
 
 
-const valorPLC = sequelize.define("VariablesPLC", {
+const valorPLC = sequelize.define("ValoresPLC", {
     id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,17 +11,20 @@ const valorPLC = sequelize.define("VariablesPLC", {
         type: DataTypes.INTEGER
       },
       variable_data: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
       },
       variable_name: {
         type: DataTypes.STRING
       },
-      connecition_string: {
+      connection_string: {
         type: DataTypes.STRING
       }  
   },{
     timestamps:false,
     freezeTableName: true
   });
+
+
+
 
 module.exports = valorPLC;
