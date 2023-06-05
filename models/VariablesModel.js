@@ -1,6 +1,6 @@
 const {DataTypes}= require('sequelize');
 const sequelize = require('../db/connection');
-const valorPlc = require('./VariablesPLCModel')
+const valorPLC = require('../models/ValorPLCModel.js')
 
 const variables = sequelize.define("Variables",{
     id: {
@@ -15,9 +15,6 @@ const variables = sequelize.define("Variables",{
       imagen: {
         type: DataTypes.STRING
       },
-      variable: {
-        type: DataTypes.STRING
-      },
       unidad: {
         type: DataTypes.STRING
       }
@@ -27,10 +24,13 @@ const variables = sequelize.define("Variables",{
     freezeTableName: true
   });
 
-  valorPlc.hasOne(variables, {
-    foreignKey: 'id_variablePlc'});
-    variables.belongsTo(valorPlc, {
-    foreignKey: 'id_variablePlc'
+  
+  variables.hasOne(valorPLC, {
+    foreignKey: 'id_variable',
+    onDelete:'CASCADE'    
+  });
+  valorPLC.belongsTo(variables, {
+    foreignKey: 'id_variable'
   });
 
 
