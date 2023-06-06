@@ -12,7 +12,7 @@ const variables = sequelize.define("Variables",{
       des_variable: {
         type: DataTypes.STRING
       },
-      imagen: {
+      image: {
         type: DataTypes.STRING
       },
       unidad: {

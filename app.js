@@ -47,7 +47,6 @@ const ioSocket = require('socket.io')(http, {
       origins: ['http://localhost:4200']
   }
 })
-
 // client-side
 socket.on("connect", () => {
   console.log('conectado a mi socket SERVICE');

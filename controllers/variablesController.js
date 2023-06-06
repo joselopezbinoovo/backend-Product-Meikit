@@ -69,7 +69,7 @@ const create = async (req, res) => {
         const body = req.body;
         const createNewVariable = await Variable.create({
             des_variable: body.des_variable,
-            imagen: body.imagen,
+            image: body.image,
             unidad: body.unidad,
             id_entity: body.id_entity,
             ValoresPLC: {
@@ -106,7 +106,7 @@ const update = async (req, res) => {
 
         const variableUpdata = await Variable.update({
             des_variable: body.des_variable,
-            imagen: body.imagen,
+            image: body.image,
             unidad: body.unidad,
             id_entity: body.id_entity,
         }, {

@@ -1,11 +1,20 @@
 const Entity = require('../models/EntityModel'); 
 const EntityConfig = require('../models/EntityConfigModel');
 const Variable = require('../models/VariablesModel')
+const fs = require('fs');
+const DIR = './';
+
 
 const createEntity = async( req,res) => {
     try {
 
         const body = req.body; 
+        var imgUrl = "";
+
+        console.log(req);
+        if (req.file) var imgUrl = `../assets/entities/${req.file.filename}`;
+        body.image = imgUrl;
+
         const createNewEntity = await Entity.create({
             desc_entity:body.desc_entity,
             ip_entity:body.ip_entity,
@@ -32,6 +41,25 @@ const updateEntity = async( req,res) => {
 
         const body = req.body; 
         const id = req.params.id
+        var imgUrl = "";
+
+
+        if (req.file) var imgUrl = `../assets/entities/${req.file.filename}`;
+        body.image = imgUrl;
+
+        const entityFoto = await Entity.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        const entityFotoInfo = entityFoto.image;
+
+        if (!(entityFotoInfo === undefined || entityFotoInfo === null || entityFotoInfo.length === 0)) {
+            fs.unlinkSync(DIR + entityFotoInfo)
+
+        }
+
         const updateEntity = await Entity.update({
     
             desc_entity:body.desc_entity,

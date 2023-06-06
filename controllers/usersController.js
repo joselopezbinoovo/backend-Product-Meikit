@@ -2,12 +2,18 @@ const User = require('../models/UsersModel');
 const Roles = require('../models/RolesModel');
 
 const bcrypt = require('bcrypt');
-
+const fs = require('fs');
+const DIR = './';
 
 const createUser = async(req,res)=> {
     try {
 
         const body = req.body;
+        var imgUrl = ""; 
+
+        if ( req.file) var imgUrl = `../assets/users/${req.file.filename}`;
+        body.image = imgUrl;
+
         let password = bcrypt.hashSync(body.password, 10);
         const createUser = await User.create({
             name:body.name,
@@ -30,6 +36,18 @@ const updateUser = async(req,res)=> {
 
         const body = req.body;
         const id = req.params.id;
+
+        if ( req.file) var imgUrl = `../assets/users/${req.file.filename}`;
+        body.image = imgUrl;
+
+        const user = await User.findOne({ where: { id: req.params.id}}); 
+        const userFotoInfo = user.image;
+
+    
+            if ( !(userFotoInfo === undefined || userFotoInfo === null || userFotoInfo?.length === 0)){
+                fs.unlinkSync(DIR + userFotoInfo)
+            }
+
         let password = bcrypt.hashSync(req.body.password, 10);
         const userUpdate = await User.update({
             name:body.name,
