@@ -31,7 +31,6 @@ const getAll = async (req, res) => {
     }
 }
 
-
 const getOne = async (req, res) => {
     try {
 
