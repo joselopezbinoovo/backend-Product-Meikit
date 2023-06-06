@@ -1,7 +1,8 @@
 const Variable = require('../models/VariablesModel');
 const Entity = require('../models/EntityModel');
 const ValorPLC = require('../models/ValorPLCModel');
-
+const fs = require('fs');
+const DIR = './';
 
 const getAll = async (req, res) => {
     try {
@@ -67,6 +68,13 @@ const create = async (req, res) => {
     try {
 
         const body = req.body;
+        var imgUrl = "";
+
+        console.log(req);
+        if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
+        body.image = imgUrl;
+
+
         const createNewVariable = await Variable.create({
             des_variable: body.des_variable,
             image: body.image,
@@ -103,6 +111,24 @@ const update = async (req, res) => {
     try {
         const body = req.body;
         const id = req.params.id
+        var imgUrl = "";
+
+        if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
+        body.image = imgUrl;
+
+        const variableFoto = await Variable.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        
+        const variableFotoInfo = variableFoto.image;
+
+        if (!(variableFotoInfo === undefined || variableFotoInfo === null || variableFotoInfo.length === 0)) {
+            fs.unlinkSync(DIR + variableFotoInfo)
+
+        }
 
         const variableUpdata = await Variable.update({
             des_variable: body.des_variable,
