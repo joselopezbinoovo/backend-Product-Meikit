@@ -81,9 +81,9 @@ const create = async (req, res) => {
             unidad: body.unidad,
             id_entity: body.id_entity,
             ValoresPLC: {
-                variable_data: body.ValoresPLC.variable_data,
-                variable_name: body.ValoresPLC.variable_name,
-                connection_string: body.ValoresPLC.connection_string
+                variableString: body.ValoresPLC.variableString,
+                variableName: body.ValoresPLC.variableName,
+                connectionString: body.ValoresPLC.connectionString
             }
         }, {
             include: [{
