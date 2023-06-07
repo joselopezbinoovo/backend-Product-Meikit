@@ -1,5 +1,6 @@
 let express = require('express'); 
 let router = express.Router(); 
+const {token} = require('../midlewares/token');
 
 const { createRol,getAllRoles,getOneRol,updateRol,deleteRol } = require('../controllers/rolesController');
 

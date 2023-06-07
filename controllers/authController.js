@@ -30,7 +30,7 @@ const login = async (req, res) => {
         }
 
         const jwToken = jwt.sign({
-            email: userValidation.email
+            name: userValidation.name
         }, env.secret)
         res.json({
             message: "Logueao!",
