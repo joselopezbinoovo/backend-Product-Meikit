@@ -33,11 +33,13 @@ const entityConfigRouter = require('./routes/entityConfig');
 const usersRouter = require('./routes/userRoutes');
 const roleRouter = require('./routes/rolesRoutes')
 const variable = require('./routes/variablesRoutes');
+const login = require('./routes/authRoute');
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/users",usersRouter)
 app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
+app.use("/api/auth",login)
 
 const { io } = require("socket.io-client");
 const socket = io("http://localhost:8080");
