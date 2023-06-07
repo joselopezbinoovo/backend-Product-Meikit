@@ -4,25 +4,24 @@ const variables = require('./VariablesModel')
 
 
 const valorPLC = sequelize.define("ValoresPLC", {
-    id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER
-      },
-      variable_data: {
-        type: DataTypes.STRING
-      },
-      variable_name: {
-        type: DataTypes.STRING
-      },
-      connection_string: {
-        type: DataTypes.STRING
-      }  
-  },{
-    timestamps:false,
-    freezeTableName: true
-  });
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  variableString: {
+    type: DataTypes.STRING,
+  },
+  variableName: {
+    type: DataTypes.STRING
+  },
+  conectionString: {
+    type: DataTypes.STRING,
+  }
+},{
+  timestamps:false,
+  freezeTableName: true
+});
 
 
 
