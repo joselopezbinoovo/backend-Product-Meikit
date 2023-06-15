@@ -11,7 +11,7 @@ const createUser = async(req,res)=> {
         const body = req.body;
         var imgUrl = ""; 
 
-        if ( req.file) var imgUrl = `../assets/users/${req.file.filename}`;
+        if ( req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
         let password = bcrypt.hashSync(body.password, 10);
