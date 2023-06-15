@@ -17,9 +17,11 @@ const login = async (req, res) => {
             }
         });
         if (!userValidation) {
-            res.status(404).json({
-                msg: 'Email no valido'
+            res.status(500).json({
+                ok: false,
+                msg: 'Nombre no valido'
             })
+            return;
         }
         const passwordValidation = bcrypt.compareSync(password, userValidation.password);
         if (!passwordValidation) {
@@ -27,6 +29,7 @@ const login = async (req, res) => {
                 ok: false,
                 msg: 'Password no valido'
             })
+            return;
         }
 
         const jwToken = jwt.sign({
