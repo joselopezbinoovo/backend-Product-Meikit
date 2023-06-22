@@ -3,11 +3,10 @@ const Roles = require('../models/RolesModel');
 
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-const DIR = './';
+const DIR = './public/users/';
 
 const createUser = async(req,res)=> {
     try {
-
         const body = req.body;
         var imgUrl = ""; 
 
@@ -37,7 +36,7 @@ const updateUser = async(req,res)=> {
         const body = req.body;
         const id = req.params.id;
 
-        if ( req.file) var imgUrl = `../assets/users/${req.file.filename}`;
+        if ( req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
         const user = await User.findOne({ where: { id: req.params.id}}); 
@@ -57,6 +56,7 @@ const updateUser = async(req,res)=> {
             id_role: body.id_role, 
     
         }, {where:{id:id}})
+        
   
         res.status(200).json({
             ok:true,
@@ -71,8 +71,15 @@ const updateUser = async(req,res)=> {
 const deleteUser = async(req,res)=> {
     try {
         const id = req.params.id; 
-        const userDelete = await User.destroy({where:{id:id}}); 
 
+        const user = await User.findOne({ where: { id: id}}); 
+        const userFotoInfo = user.image;
+
+    
+             if ( !(userFotoInfo === undefined || userFotoInfo === null || userFotoInfo?.length === 0)){
+                fs.unlinkSync(DIR + userFotoInfo)
+            } 
+        const userDelete = await User.destroy({where:{id:id}}); 
         res.status(200).json({
             ok:true,
             msg:'Usuario Borrado',
@@ -84,8 +91,6 @@ const deleteUser = async(req,res)=> {
         return res.status(500).json({ message: error.message });
     }
 }
-
-
 
 const getOneUser = async(req,res)=> {
     try {
@@ -108,7 +113,6 @@ const getOneUser = async(req,res)=> {
         
     }
 }
-
 
 const getAllUsers = async(req,res)=> {
     try {

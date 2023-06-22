@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = require('express')();
 const http = require('http').Server(app);
-
+const path = require('path')
 
 //models 
 const entityConfig = require('./models/EntityConfigModel')
@@ -25,8 +25,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json ());
 app.use(cors());
 
+/* var assetsPath = path.join(__dirname, '/public');
+app.use(express.static(assetsPath));
+
+console.log(assetsPath); */
 //RUTAS 
 
+
+app.use('/images', express.static('public/users'))
 /* app.use('ruta') */
 const entityRouter = require('./routes/entityRoute'); 
 const entityConfigRouter = require('./routes/entityConfig');
@@ -36,7 +42,7 @@ const variable = require('./routes/variablesRoutes');
 const login = require('./routes/authRoute');
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
-app.use("/api/users",usersRouter)
+app.use("/api/users",usersRouter,express.static('public/users'))
 app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
 app.use("/api/auth",login)

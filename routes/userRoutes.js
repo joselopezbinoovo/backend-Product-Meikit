@@ -7,10 +7,10 @@ const {token} = require('../midlewares/token');
 const fileUpload = require('../config/multer'); 
 
 
-router.get('/getAll',token,roleManagement,getAllUsers);
+router.get('/getAll',getAllUsers);
 router.get('/getOne/:id',token,roleManagement,getOneUser);
-router.post('/create/:id_role',token,roleManagement,fileUpload('./public/users/'), createUser);
-router.put('/update/:id',token,roleManagement,fileUpload('./public/users/'), updateUser);
-router.delete('/delete/:id',token,roleManagement, deleteUser);
+router.post('/create',fileUpload('./public/users/'), createUser);
+router.put('/update/:id',fileUpload('./public/users/'), updateUser);
+router.delete('/delete/:id', deleteUser);
 
-module.exports = router;
+module.exports = router;    
