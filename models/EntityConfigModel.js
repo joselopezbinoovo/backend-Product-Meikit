@@ -12,9 +12,12 @@ const entityConfig = sequelize.define("EntityConfig", {
    /*    id_entity: {
         type: DataTypes.INTEGER
       }, */
-      color: {
+      textColor: {
         type: DataTypes.STRING
-      }
+      },
+      bgColor: {
+        type: DataTypes.STRING
+      },
   },{
     timestamps:false,
     freezeTableName: true

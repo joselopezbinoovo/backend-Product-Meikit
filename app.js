@@ -64,7 +64,6 @@ ioSocket.on('connection',(socketData)=> {
   console.log('conectado a socket');
 
   socket.on("push",(data)=> {
-    console.log(data);
     socketData.emit('envio',data)
   }
   );
@@ -72,12 +71,7 @@ ioSocket.on('connection',(socketData)=> {
 }) 
 
 socket.on("disconnect", (socket) => {
-  console.log(socket.id); // undefined
 });
-
-
-
-
 
 
 //Conexion de la bbdd 

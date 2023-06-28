@@ -19,8 +19,10 @@ const createEntity = async( req,res) => {
             desc_entity:body.desc_entity,
             ip_entity:body.ip_entity,
             image:body.image,
+            state:body.state,
             EntityConfig:{
-                color:body.entityConfig.color
+                textColor:body.entityConfig.textColor,
+                bgColor:body.entityConfig.bgColor
             }
         },{
             include:EntityConfig
@@ -61,14 +63,16 @@ const updateEntity = async( req,res) => {
         }
 
         const updateEntity = await Entity.update({
-    
+
             desc_entity:body.desc_entity,
             ip_entity:body.ip_entity,
-            image:body.image
+            image:body.image,
+            state:body.state
         },{where:{id:id}})
 
         const updateEntityConfig = await EntityConfig.update({
-            color:body.color
+            textColor:body.textColor,
+            bgColor:body.bgColor
         }, {where:{id:id}})
 
         res.status(200).json({

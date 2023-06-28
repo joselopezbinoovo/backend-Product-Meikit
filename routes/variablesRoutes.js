@@ -5,7 +5,7 @@ const {token} = require('../midlewares/token');
 
 
 
-router.get('/getAll',token, getAll);
+router.get('/getAll', getAll);
 router.get('/getOne/:id',token,getOne);
 router.post('/create',token, create);
 router.put('/update/:id',token, update);

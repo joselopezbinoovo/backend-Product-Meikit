@@ -18,7 +18,10 @@ const entity = sequelize.define("Entity", {
       },
       image: {
         type: DataTypes.STRING
-      }
+      },
+      state:{
+        type: DataTypes.BOOLEAN
+      },
   },{
     timestamps:false,
     freezeTableName: true
