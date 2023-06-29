@@ -2,6 +2,7 @@ const Entity = require('../models/EntityModel');
 const EntityConfig = require('../models/EntityConfigModel');
 const Variable = require('../models/VariablesModel')
 const fs = require('fs');
+const valorPLC = require('../models/ValorPLCModel');
 const DIR = './';
 
 
@@ -121,8 +122,12 @@ const getAll = async(req,res)=> {
                     model: EntityConfig ,
                 },
                 { 
-                    model:Variable
-                }
+                    model:Variable,
+                    include:[{
+
+                        model:valorPLC
+                }]
+                },
               ],
         });
         res.status(200).json({

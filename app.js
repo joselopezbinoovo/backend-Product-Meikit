@@ -64,6 +64,7 @@ ioSocket.on('connection',(socketData)=> {
   console.log('conectado a socket');
 
   socket.on("push",(data)=> {
+    console.log(data);
     socketData.emit('envio',data)
   }
   );
