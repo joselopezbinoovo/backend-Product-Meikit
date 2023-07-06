@@ -3,7 +3,8 @@ const EntityConfig = require('../models/EntityConfigModel');
 const Variable = require('../models/VariablesModel')
 const fs = require('fs');
 const valorPLC = require('../models/ValorPLCModel');
-const DIR = './';
+const DIR = './public/entity/';
+
 
 
 const createEntity = async( req,res) => {
@@ -13,7 +14,7 @@ const createEntity = async( req,res) => {
         var imgUrl = "";
 
         console.log(req);
-        if (req.file) var imgUrl = `../assets/entities/${req.file.filename}`;
+        if (req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
         const createNewEntity = await Entity.create({
@@ -47,7 +48,7 @@ const updateEntity = async( req,res) => {
         var imgUrl = "";
 
 
-        if (req.file) var imgUrl = `../assets/entities/${req.file.filename}`;
+        if (req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
         const entityFoto = await Entity.findOne({
@@ -55,6 +56,8 @@ const updateEntity = async( req,res) => {
                 id: id
             }
         });
+
+        
 
         const entityFotoInfo = entityFoto.image;
 
@@ -143,19 +146,20 @@ const getAll = async(req,res)=> {
 const getOne = async(req,res)=> {
     try {
         const id = req.params.id;
-        const entity = await Entity.findOne({
+
+        console.log(id)
+       // const entity = await Entity.findOne( {include: EntityConfig }, {where:{id:id}});
+        const entity = await Entity.findByPk(id, {
             include: [ 
-                {
-                  model: EntityConfig ,
-                },
-                {
-                    model:Variable
-                }
-              ],
-        }, {where:{id:id}});
+              {
+                model: EntityConfig ,
+              },
+            ],
+          });
+
         res.status(200).json({
             msg:'Dato obtenido',
-            data:entity
+            entity
         })
 
     } catch (error) {
@@ -163,7 +167,24 @@ const getOne = async(req,res)=> {
     }
 }
 
+const changeState = async(req,res) => {
+
+    try{
+    const id = req.params.id; 
+    const body = req.body; 
+    const updateEntity = await Entity.update({
+        state:body.state
+    },{where:{id:id}})
+
+    res.status(200).json({
+        msg:'Updated State',
+        data:updateEntity
+    })
+}catch (error) {
+    return res.status(500).json({ message: error.message });
+}
+}
 
 module.exports = {
-    createEntity,updateEntity,deleteEntity,getAll,getOne
+    createEntity,updateEntity,deleteEntity,getAll,getOne,changeState
 }
