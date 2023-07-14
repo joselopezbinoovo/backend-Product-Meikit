@@ -11,6 +11,7 @@ const role = require('./models/RolesModel')
 const user = require('./models/UsersModel')
 const valorPLC = require('./models/ValorPLCModel')
 const valariables = require('./models/VariablesModel')
+const historical = require('./models/HistoricalModel')
 
 //Sequelize 
 const sequelize = require('./db/connection')
@@ -33,15 +34,18 @@ console.log(assetsPath); */
 
 
 app.use('/images', express.static('public/users'))
+app.use('/imagesEntity', express.static('public/entity'))
 /* app.use('ruta') */
 const entityRouter = require('./routes/entityRoute'); 
 const entityConfigRouter = require('./routes/entityConfig');
+const historicalRouter = require('./routes/historicalRoutes')
 const usersRouter = require('./routes/userRoutes');
 const roleRouter = require('./routes/rolesRoutes')
 const variable = require('./routes/variablesRoutes');
 const login = require('./routes/authRoute');
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
+app.use("/api/historical",historicalRouter);
 app.use("/api/users",usersRouter,express.static('public/users'))
 app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
@@ -64,7 +68,6 @@ ioSocket.on('connection',(socketData)=> {
   console.log('conectado a socket');
 
   socket.on("push",(data)=> {
-    //console.log(data);
     socketData.emit('envio',data)
   }
   );

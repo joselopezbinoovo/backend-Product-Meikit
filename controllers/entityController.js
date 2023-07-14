@@ -4,6 +4,7 @@ const Variable = require('../models/VariablesModel')
 const fs = require('fs');
 const valorPLC = require('../models/ValorPLCModel');
 const DIR = './public/entity/';
+const Sequelize = require('sequelize')
 
 
 
@@ -27,7 +28,11 @@ const createEntity = async( req,res) => {
                 bgColor:body.entityConfig.bgColor
             }
         },{
-            include:EntityConfig
+            include: [{
+                model: EntityConfig,
+                cascade: true,
+
+            }, ],
         })
 
         res.status(200).json({
@@ -100,7 +105,7 @@ const deleteEntity = async(req,res)=>{
             cascade: true,
             include: [{
               model: EntityConfig,
-              cascade: true,
+             // cascade: true,
             }],
           });
 
@@ -143,6 +148,68 @@ const getAll = async(req,res)=> {
     }
 }
 
+const getAllWhereVariableEntityNull = async(req,res)=> {
+    try {
+        
+        const entities = await Entity.findAll({
+            order: [["id", "ASC"]],
+            include: [ 
+                {
+                    model: EntityConfig ,
+                },
+                { 
+                    model:Variable,
+                    include:[{
+
+                        model:valorPLC
+                }]
+                },
+                
+              ],
+              where: [
+                Sequelize.where(Sequelize.col('Variables.id'), null), ]
+        });
+        res.status(200).json({
+            msg:'Datos obtenidos',
+            data:entities
+        })
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+const getAllEntitiesMonitoring = async(req,res)=> {
+    try {
+        
+        const entities = await Entity.findAll({
+            order: [["id", "ASC"]],
+            include: [ 
+                {
+                    model: EntityConfig ,
+                },
+                { 
+                    model:Variable,
+                     where: {
+            monitoring: true,
+          },
+                    include:[{
+
+                        model:valorPLC
+                }]
+                },
+              ],
+        });
+        res.status(200).json({
+            msg:'Datos obtenidos',
+            data:entities
+        })
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 const getOne = async(req,res)=> {
     try {
         const id = req.params.id;
@@ -153,7 +220,8 @@ const getOne = async(req,res)=> {
             include: [ 
               {
                 model: EntityConfig ,
-              },
+              },  { 
+                model:Variable,}
             ],
           });
 
@@ -185,6 +253,23 @@ const changeState = async(req,res) => {
 }
 }
 
+const getAllOnlyEntity = async(req,res)=>{
+    try {
+        const getEntites = await Entity.findAll(); 
+
+        res.status(200).json({
+            msg:'OK',
+            data:getEntites
+        })
+
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+
+
 module.exports = {
-    createEntity,updateEntity,deleteEntity,getAll,getOne,changeState
+    createEntity,updateEntity,deleteEntity,getAll,getOne,changeState,getAllWhereVariableEntityNull,getAllOnlyEntity,getAllEntitiesMonitoring
 }
