@@ -68,27 +68,28 @@ const create = async (req, res) => {
     try {
 
         const body = req.body;
-        var imgUrl = "";
+  /*       var imgUrl = "";
 
-        console.log(req);
         if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
-        body.image = imgUrl;
+        body.image = imgUrl; */
 
 
         const createNewVariable = await Variable.create({
             des_variable: body.des_variable,
             image: body.image,
             unidad: body.unidad,
+            selected:body.selected,
             id_entity: body.id_entity,
+            monitoring:body.monitoring,
             ValoresPLC: {
                 variableString: body.ValoresPLC.variableString,
                 variableName: body.ValoresPLC.variableName,
-                connectionString: body.ValoresPLC.connectionString
+                conectionString: body.ValoresPLC.conectionString
             }
         }, {
             include: [{
                 model: ValorPLC,
-                cascade: true,
+               // cascade: true,
 
             }, ],
         })
@@ -134,7 +135,9 @@ const update = async (req, res) => {
             des_variable: body.des_variable,
             image: body.image,
             unidad: body.unidad,
+            selected:body.selected,
             id_entity: body.id_entity,
+            monitoring:body.monitoring
         }, {
             where: {
                 id: id  
@@ -162,6 +165,35 @@ const update = async (req, res) => {
     }
 
 }
+
+const changeSelected = async(req,res) => {
+  
+  try{
+    const body = req.body;
+    const id = req.params.id
+
+    const changeSelected = await Variable.update({
+        selected:body.selected
+    } ,{
+        where: {
+            id: id  
+        }
+    })
+
+    res.status(200).json({
+        msg: 'Dato actualizado',
+        data:changeSelected
+    })
+  } catch (error) {
+    return res.status(500).json({
+        message: error.message
+    });
+
+}
+    
+}
+
+
 
 const deleting = async (req, res) => {
 
@@ -197,5 +229,6 @@ module.exports = {
     getOne,
     create,
     update,
-    deleting
+    deleting,
+    changeSelected
 }

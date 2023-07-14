@@ -9,9 +9,6 @@ const entityConfig = sequelize.define("EntityConfig", {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-   /*    id_entity: {
-        type: DataTypes.INTEGER
-      }, */
       textColor: {
         type: DataTypes.STRING
       },

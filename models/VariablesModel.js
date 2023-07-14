@@ -9,6 +9,9 @@ const variables = sequelize.define("Variables",{
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      selected:{
+        type:DataTypes.BOOLEAN
+      },
       des_variable: {
         type: DataTypes.STRING
       },
@@ -17,6 +20,10 @@ const variables = sequelize.define("Variables",{
       },
       unidad: {
         type: DataTypes.STRING
+      },
+      monitoring: {
+        type:DataTypes.BOOLEAN
+
       }
     
   },{

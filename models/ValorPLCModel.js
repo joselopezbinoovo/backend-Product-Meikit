@@ -5,9 +5,10 @@ const variables = require('./VariablesModel')
 
 const valorPLC = sequelize.define("ValoresPLC", {
   id: {
-    type: DataTypes.INTEGER,
+    allowNull: false,
     autoIncrement: true,
     primaryKey: true,
+    type: DataTypes.INTEGER
   },
   variableString: {
     type: DataTypes.STRING,
