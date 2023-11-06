@@ -30,4 +30,27 @@ const getAll = async( req,res) => {
   }
 }
 
-module.exports={createHistorical,getAll}
+
+const createAutoHistorical = async(req,res)=> {
+
+    try {
+
+        const VariablesSelected = await variables.findAll({
+            where:{selected:true}
+        })
+
+
+        res.status(200).json({
+            msg:'todo ok',
+            VariablesSelected
+        })
+        
+    } catch (error) {
+        
+    }
+}
+
+
+
+
+module.exports={createHistorical,getAll,createAutoHistorical}

@@ -22,6 +22,9 @@ const entity = sequelize.define("Entity", {
       state:{
         type: DataTypes.BOOLEAN
       },
+      order:{
+        type:DataTypes.INTEGER,
+      }
   },{
     timestamps:false,
     freezeTableName: true

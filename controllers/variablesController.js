@@ -112,24 +112,24 @@ const update = async (req, res) => {
     try {
         const body = req.body;
         const id = req.params.id
-        var imgUrl = "";
+       // var imgUrl = "";
 
-        if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
-        body.image = imgUrl;
-
+   /*      if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
+        body.image = imgUrl; */
+/* 
         const variableFoto = await Variable.findOne({
             where: {
                 id: id
             }
-        });
+        }); */
 
         
-        const variableFotoInfo = variableFoto.image;
+   /*      const variableFotoInfo = variableFoto.image;
 
         if (!(variableFotoInfo === undefined || variableFotoInfo === null || variableFotoInfo.length === 0)) {
             fs.unlinkSync(DIR + variableFotoInfo)
 
-        }
+        } */
 
         const variableUpdata = await Variable.update({
             des_variable: body.des_variable,
@@ -137,7 +137,7 @@ const update = async (req, res) => {
             unidad: body.unidad,
             selected:body.selected,
             id_entity: body.id_entity,
-            monitoring:body.monitoring
+            monitoring:body.monitoring,
         }, {
             where: {
                 id: id  
@@ -193,8 +193,6 @@ const changeSelected = async(req,res) => {
     
 }
 
-
-
 const deleting = async (req, res) => {
 
     try {
@@ -223,6 +221,28 @@ const deleting = async (req, res) => {
 
 }
 
+const updateBulking = async(req,res)=> {
+
+    try {
+        const body = req.body; 
+
+        const updateBulkingVariable = await Variable.bulkCreate(body, { updateOnDuplicate: ['monitoring'] } )
+
+        res.status(200).json({
+            msg: 'Variable eliminada',
+            data:updateBulkingVariable})
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+
+}
+
+
+
 
 module.exports = {
     getAll,
@@ -230,5 +250,6 @@ module.exports = {
     create,
     update,
     deleting,
-    changeSelected
+    changeSelected,
+    updateBulking
 }

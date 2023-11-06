@@ -22,7 +22,7 @@ dotenv.config();
 
 //CORS DE LA APP
 const cors = require("cors");
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json ());
 app.use(cors());
 
@@ -52,6 +52,8 @@ app.use("/api/variable",variable)
 app.use("/api/auth",login)
 
 const { io } = require("socket.io-client");
+const { log } = require("console");
+const variables = require("./models/VariablesModel");
 const socket = io("http://localhost:8080");
 
 const ioSocket = require('socket.io')(http, {
@@ -64,19 +66,20 @@ socket.on("connect", () => {
   console.log('conectado a mi socket SERVICE');
 });
 
+let plcValues 
 ioSocket.on('connection',(socketData)=> {  
   console.log('conectado a socket');
-
   socket.on("push",(data)=> {
+    plcValues = 
     socketData.emit('envio',data)
+    return plcValues = data.data
   }
   );
-
 }) 
-
 socket.on("disconnect", (socket) => {
-});
 
+  console.log('socket disconnect',socket)
+});
 
 //Conexion de la bbdd 
 async function dbConnect(){
@@ -95,3 +98,53 @@ async function dbConnect(){
   }
   
 dbConnect();
+
+
+
+async function getVaraiblesSelectedTrue(){
+  try {
+    let date = new Date()
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let seconds = date.getSeconds();
+    let today = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + seconds;
+    
+    const array = []
+    const variablesSelected = await variables.findAll({
+      order: [["id", "ASC"]],
+      where:{selected:true},
+  })
+
+    variablesSelected.forEach(element => {
+      array.push(element.dataValues)
+    }); 
+
+    plcValues.forEach(plcValue => {
+      array.forEach(variable => {
+        if( variable.id === plcValue.id){
+            console.log(variable)
+            variable.plcValue = plcValue.plcValues
+            variable.date = today
+        }      
+      })
+    })
+    const nuevoArray = array.map(({ id,des_variable, unidad, plcValue, date }) => ({
+      desc_variable:des_variable,
+      unidad,
+      plcValue,
+      date,
+      id_variable:id
+    }));
+    const create = await historical.bulkCreate(nuevoArray)
+
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+setInterval(async () =>{
+  getVaraiblesSelectedTrue()
+},20000)

@@ -23,6 +23,7 @@ const createEntity = async( req,res) => {
             ip_entity:body.ip_entity,
             image:body.image,
             state:body.state,
+            order:body.order,
             EntityConfig:{
                 textColor:body.entityConfig.textColor,
                 bgColor:body.entityConfig.bgColor
@@ -76,7 +77,8 @@ const updateEntity = async( req,res) => {
             desc_entity:body.desc_entity,
             ip_entity:body.ip_entity,
             image:body.image,
-            state:body.state
+            state:body.state,
+            order:body.order,
         },{where:{id:id}})
 
         const updateEntityConfig = await EntityConfig.update({
@@ -124,7 +126,7 @@ const getAll = async(req,res)=> {
     try {
         
         const entities = await Entity.findAll({
-            order: [["id", "ASC"]],
+            order: [["order", "ASC"]],
             include: [ 
                 {
                     model: EntityConfig ,
@@ -267,9 +269,26 @@ const getAllOnlyEntity = async(req,res)=>{
         return res.status(500).json({ message: error.message });
     }
 }
-
+const changeOrder = async(req,res)=>{
+    try {
+        const { id1, order1, id2, order2 } = req.body; // Obtén los valores desde el cuerpo de la solicitud
+    
+        // Actualiza el primer objeto con los valores del segundo
+        await Entity.update({ order: order2 }, { where: { id: id1 } });
+    
+        // Actualiza el segundo objeto con los valores del primero
+        await Entity.update({ order: order1 }, { where: { id: id2 } });
+    
+        res.status(200).json({
+          msg: 'OK',
+          data: 'Intercambio exitoso.',
+        });
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+}
 
 
 module.exports = {
-    createEntity,updateEntity,deleteEntity,getAll,getOne,changeState,getAllWhereVariableEntityNull,getAllOnlyEntity,getAllEntitiesMonitoring
+createEntity,updateEntity,deleteEntity,getAll,getOne,changeState,getAllWhereVariableEntityNull,getAllOnlyEntity,getAllEntitiesMonitoring,changeOrder
 }
