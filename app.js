@@ -12,6 +12,7 @@ const user = require('./models/UsersModel')
 const valorPLC = require('./models/ValorPLCModel')
 const valariables = require('./models/VariablesModel')
 const historical = require('./models/HistoricalModel')
+const serverConnection = require('./models/ServerConnectionModel');
 
 //Sequelize 
 const sequelize = require('./db/connection')

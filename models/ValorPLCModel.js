@@ -16,7 +16,7 @@ const valorPLC = sequelize.define("ValoresPLC", {
   variableName: {
     type: DataTypes.STRING
   },
-  conectionString: {
+  serverConnection: {
     type: DataTypes.STRING,
   }
 },{

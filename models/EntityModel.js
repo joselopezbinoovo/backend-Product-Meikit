@@ -13,9 +13,6 @@ const entity = sequelize.define("Entity", {
       desc_entity: {
         type: DataTypes.STRING
       },
-      ip_entity: {
-        type: DataTypes.STRING
-      },
       image: {
         type: DataTypes.STRING
       },

@@ -3,7 +3,7 @@ const sequelize = require('../db/connection');
 const variables = require('./VariablesModel')
 
 
-const historical = sequelize.define("historical", {
+const historical = sequelize.define("Historical", {
     id: {
         allowNull: false,
         autoIncrement: true,
