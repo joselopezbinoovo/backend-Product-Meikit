@@ -12,9 +12,13 @@ const createEntity = async( req,res) => {
     try {
 
         const body = req.body; 
-        var imgUrl = "";
+        var imgUrl = "";    
 
-        console.log(req);
+
+
+        console.log(body);
+
+        console.log(req.file);
         if (req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
@@ -52,7 +56,6 @@ const updateEntity = async( req,res) => {
         const body = req.body; 
         const id = req.params.id
         var imgUrl = "";
-
 
         if (req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
@@ -246,8 +249,15 @@ const changeState = async(req,res) => {
         state:body.state
     },{where:{id:id}})
 
+    const entityState = await Entity.findOne({
+        where: {
+            id: id
+        }
+    });
+
+
     res.status(200).json({
-        msg:'Updated State',
+        msg:entityState.state === true ? 'Maquina On': 'Maquina Off',
         data:updateEntity
     })
 }catch (error) {

@@ -1,8 +1,8 @@
 const Variable = require('../models/VariablesModel');
 const Entity = require('../models/EntityModel');
 const ValorPLC = require('../models/ValorPLCModel');
-const fs = require('fs');
-const DIR = './';
+
+
 
 const getAll = async (req, res) => {
     try {
@@ -68,11 +68,6 @@ const create = async (req, res) => {
     try {
 
         const body = req.body;
-  /*       var imgUrl = "";
-
-        if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
-        body.image = imgUrl; */
-
 
         const createNewVariable = await Variable.create({
             des_variable: body.des_variable,
@@ -95,7 +90,7 @@ const create = async (req, res) => {
         })
 
         res.status(200).json({
-            msg: 'Dato creado',
+            msg: 'Varaible creada con exito',
             data: createNewVariable
 
         })
@@ -111,25 +106,8 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const body = req.body;
+
         const id = req.params.id
-       // var imgUrl = "";
-
-   /*      if (req.file) var imgUrl = `../assets/variables/${req.file.filename}`;
-        body.image = imgUrl; */
-/* 
-        const variableFoto = await Variable.findOne({
-            where: {
-                id: id
-            }
-        }); */
-
-        
-   /*      const variableFotoInfo = variableFoto.image;
-
-        if (!(variableFotoInfo === undefined || variableFotoInfo === null || variableFotoInfo.length === 0)) {
-            fs.unlinkSync(DIR + variableFotoInfo)
-
-        } */
 
         const variableUpdata = await Variable.update({
             des_variable: body.des_variable,
@@ -144,16 +122,16 @@ const update = async (req, res) => {
             }
         })
         const valorPLCUpdate  = await ValorPLC.update({
-            variable_data: body.variable_data,
-            variable_name: body.variable_name,
-            connection_string: body.connection_string,
+            variableString: body.ValoresPLC.variableString,
+            variableName: body.ValoresPLC.variableName,
+            conectionString: body.ValoresPLC.conectionString,
         }, {
             where: {
                 id_variable: id  
             }
         })
         res.status(200).json({
-            msg: 'Dato actualizado',
+            msg: 'Variable actualizada con exito',
             variableUpdata,valorPLCUpdate
         })
 

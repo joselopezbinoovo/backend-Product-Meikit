@@ -23,7 +23,7 @@ const historical = sequelize.define("historical", {
         type: DataTypes.STRING
       },
       date:{
-        type: DataTypes.STRING
+        type: DataTypes.DATE
       },
   },{
     timestamps:false,

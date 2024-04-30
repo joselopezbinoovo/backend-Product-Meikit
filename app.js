@@ -52,13 +52,16 @@ app.use("/api/variable",variable)
 app.use("/api/auth",login)
 
 const { io } = require("socket.io-client");
-const { log } = require("console");
 const variables = require("./models/VariablesModel");
-const socket = io("http://localhost:8080");
+//const socket = io("http://192.168.200.23:8082");  //NodejOpcua
+const socket = io("http://localhost:8082");  //NodejOpcua
+
 
 const ioSocket = require('socket.io')(http, {
   cors: {
-      origins: ['http://localhost:4200']
+      //origins: ['http://192.168.200.23:8085'] //Front
+      origins: ['http://localhost:4200'] //Front
+
   }
 })
 // client-side
@@ -92,6 +95,7 @@ async function dbConnect(){
      // await Variable.sync({force:false});
      // await User.sync({force:false});
      // await ValorOpcua.sync({force:false});
+       //await historical.sync({force:false});
     } catch (error) {
       console.error('Error al conectar con la base de datos:', error);
     }
@@ -99,47 +103,42 @@ async function dbConnect(){
   
 dbConnect();
 
-
-
 async function getVaraiblesSelectedTrue(){
   try {
-    let date = new Date()
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-    let seconds = date.getSeconds();
-    let today = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + seconds;
-    
     const array = []
     const variablesSelected = await variables.findAll({
       order: [["id", "ASC"]],
       where:{selected:true},
   })
+  if ( variablesSelected.length > 0){
 
     variablesSelected.forEach(element => {
       array.push(element.dataValues)
     }); 
-
     plcValues.forEach(plcValue => {
       array.forEach(variable => {
         if( variable.id === plcValue.id){
-            console.log(variable)
-            variable.plcValue = plcValue.plcValues
-            variable.date = today
+          const date = new Date()
+          variable.plcValue = plcValue.plcValues
+            variable.date = date
         }      
       })
     })
-    const nuevoArray = array.map(({ id,des_variable, unidad, plcValue, date }) => ({
+    const nuevoArray = array.map(({ id,des_variable, desc_entity,unidad, plcValue, date }) => ({
       desc_variable:des_variable,
+      desc_entity:desc_entity,
       unidad,
       plcValue,
       date,
       id_variable:id
     }));
+
+
     const create = await historical.bulkCreate(nuevoArray)
 
+  }else {
+    return
+  }
   } catch (error) {
       console.log(error);
   }
