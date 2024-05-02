@@ -27,8 +27,8 @@ const createEntity = async( req,res) => {
             state:body.state,
             order:body.order,
             EntityConfig:{
-                textColor:body.entityConfig.textColor,
-                bgColor:body.entityConfig.bgColor
+                textColor:body.textColor,
+                bgColor:body.bgColor
             }
         },{
             include: [{
