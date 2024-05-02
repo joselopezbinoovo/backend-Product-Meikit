@@ -4,7 +4,8 @@ const Variable = require('../models/VariablesModel')
 const fs = require('fs');
 const valorPLC = require('../models/ValorPLCModel');
 const DIR = './public/entity/';
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
+const serverConnection = require('../models/ServerConnectionModel');
 
 
 
@@ -14,23 +15,20 @@ const createEntity = async( req,res) => {
         const body = req.body; 
         var imgUrl = "";    
 
-
-
-        console.log(body);
-
-        console.log(req.file);
         if (req.file) var imgUrl = `${req.file.filename}`;
         body.image = imgUrl;
 
+        console.log(body);
+
         const createNewEntity = await Entity.create({
             desc_entity:body.desc_entity,
-            ip_entity:body.ip_entity,
             image:body.image,
+            id_serverConn:body.id_serverConn,
             state:body.state,
             order:body.order,
             EntityConfig:{
-                textColor:body.entityConfig.textColor,
-                bgColor:body.entityConfig.bgColor
+                textColor:body.textColor,
+                bgColor:body.bgColor
             }
         },{
             include: [{
@@ -78,7 +76,7 @@ const updateEntity = async( req,res) => {
         const updateEntity = await Entity.update({
 
             desc_entity:body.desc_entity,
-            ip_entity:body.ip_entity,
+            id_serverConn:body.id_serverConn,
             image:body.image,
             state:body.state,
             order:body.order,
@@ -103,7 +101,20 @@ const deleteEntity = async(req,res)=>{
     
     try {
         const id = req.params.id;
-        const results = await Entity.destroy({
+
+        const entity = await Entity.findByPk(id); 
+
+        const serverConn = await serverConnection.findByPk(entity.id_serverConn, {
+            include: Entity // Nombre del modelo con el que deseas incluir la relación
+        });
+
+        console.log(serverConn.Entities.length);
+
+        if ( serverConn.Entities.length === 1){
+            await serverConnection.destroy({where:{id:entity.id_serverConn}})
+        }
+
+         const results = await Entity.destroy({
             where: {
               id: id,
             },
@@ -113,7 +124,7 @@ const deleteEntity = async(req,res)=>{
              // cascade: true,
             }],
           });
-
+ 
           res.status(200).json({
             msg:'Dato eliminado',
             data:results
@@ -130,7 +141,9 @@ const getAll = async(req,res)=> {
         
         const entities = await Entity.findAll({
             order: [["order", "ASC"]],
-            include: [ 
+            include: [  {
+                    model:serverConnection
+                },
                 {
                     model: EntityConfig ,
                 },
@@ -159,6 +172,9 @@ const getAllWhereVariableEntityNull = async(req,res)=> {
         const entities = await Entity.findAll({
             order: [["id", "ASC"]],
             include: [ 
+                {
+                    model:serverConnection
+                },
                 {
                     model: EntityConfig ,
                 },
@@ -190,6 +206,9 @@ const getAllEntitiesMonitoring = async(req,res)=> {
         const entities = await Entity.findAll({
             order: [["id", "ASC"]],
             include: [ 
+                {
+                    model:serverConnection
+                },
                 {
                     model: EntityConfig ,
                 },
