@@ -14,6 +14,8 @@ const valariables = require('./models/VariablesModel')
 const historical = require('./models/HistoricalModel')
 const serverConnection = require('./models/ServerConnectionModel');
 
+const {getAllServerConn} = require('./controllers/serverConnController');
+
 //Sequelize 
 const sequelize = require('./db/connection')
 
@@ -52,6 +54,21 @@ app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
 app.use("/api/auth",login)
 
+
+
+async function main() {
+  try {
+      // Llama a la función y espera a que se resuelva la promesa
+      const result = await getAllServerConn();
+
+      return result
+      // Hacer lo que quieras con el resultado, como imprimirlo en la consola
+  } catch (error) {
+      // Manejar cualquier error que pueda ocurrir durante la ejecución de la función
+      console.error(error);
+  }
+}
+
 const { io } = require("socket.io-client");
 const variables = require("./models/VariablesModel");
 //const socket = io("http://192.168.200.23:8082");  //NodejOpcua
@@ -70,18 +87,29 @@ socket.on("connect", () => {
   console.log('conectado a mi socket SERVICE');
 });
 
-let plcValues 
-ioSocket.on('connection',(socketData)=> {  
-  console.log('conectado a socket');
-  socket.on("push",(data)=> {
-    plcValues = 
-    socketData.emit('envio',data)
-    return plcValues = data.data
-  }
-  );
-}) 
-socket.on("disconnect", (socket) => {
 
+let plcValues 
+main()
+    .then(socketTags => {
+        // Iterar sobre los objetos dentro de la promesa
+        socketTags.forEach(server => {
+            ioSocket.on('connection', (socketData) => {
+                console.log('conectado a socket');
+                socket.on(server.socketTag, (data) => {
+                  //console.log(data.data);
+                   plcValues = 
+                  socketData.emit('envio',data)
+                   return plcValues = data.data
+                });
+            });
+        });
+    })
+    .catch(error => {
+        // Maneja cualquier error que ocurra durante la ejecución de la función main
+        console.error('Ocurrió un error:', error);
+    });
+
+socket.on("disconnect", (socket) => {
   console.log('socket disconnect',socket)
 });
 
@@ -104,7 +132,7 @@ async function dbConnect(){
   
 dbConnect();
 
-async function getVaraiblesSelectedTrue(){
+ async function getVaraiblesSelectedTrue(){
   try {
     const array = []
     const variablesSelected = await variables.findAll({
@@ -147,4 +175,19 @@ async function getVaraiblesSelectedTrue(){
 
 setInterval(async () =>{
   getVaraiblesSelectedTrue()
-},20000)
+},20000) 
+
+
+
+
+/* ioSocket.on('connection',(socketData)=> {  
+  console.log('conectado a socket');
+
+  console.log(socketTags);
+  socket.on("push1",(data)=> {
+    plcValues = 
+    socketData.emit('envio',data)
+    return plcValues = data.data
+  }
+  );
+})  */
