@@ -46,6 +46,7 @@ const usersRouter = require('./routes/userRoutes');
 const roleRouter = require('./routes/rolesRoutes')
 const variable = require('./routes/variablesRoutes');
 const login = require('./routes/authRoute');
+const serverConnectionRouter = require('./routes/serverConnRoute')
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/historical",historicalRouter);
@@ -53,6 +54,7 @@ app.use("/api/users",usersRouter,express.static('public/users'))
 app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
 app.use("/api/auth",login)
+app.use("/api/serverConn",serverConnectionRouter )
 
 
 
