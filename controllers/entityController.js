@@ -63,14 +63,14 @@ const updateEntity = async( req,res) => {
             }
         });
 
-        
-
         const entityFotoInfo = entityFoto.image;
 
         if (!(entityFotoInfo === undefined || entityFotoInfo === null || entityFotoInfo.length === 0)) {
             fs.unlinkSync(DIR + entityFotoInfo)
 
         }
+
+        console.log(body);
 
         const updateEntity = await Entity.update({
 
@@ -84,7 +84,7 @@ const updateEntity = async( req,res) => {
         const updateEntityConfig = await EntityConfig.update({
             textColor:body.textColor,
             bgColor:body.bgColor
-        }, {where:{id:id}})
+        }, {where:{entity_id:id}})
 
         res.status(200).json({
             msg:'Dato actualizado',
@@ -139,7 +139,7 @@ const getAll = async(req,res)=> {
     try {
         
         const entities = await Entity.findAll({
-            order: [["order", "ASC"]],
+            order: [["id", "ASC"]],
             include: [  {
                     model:serverConnection
                 },

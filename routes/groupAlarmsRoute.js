@@ -7,6 +7,6 @@ router.post('/createGroupAlarm',createGroupAlarm);
 router.get('/getAllGroupsAlarm',getAllGroupsAlarm );
 router.get('/getOneGroupAlarm/:id',getOneGroupAlarm );
 router.delete('/deleteGroupAlarm/:id',deleteGroupAlarm );
-router.put('/updateGroupAlarm:/id',updateGroupAlarm );
+router.put('/updateGroupAlarm/:id',updateGroupAlarm );
 
 module.exports = router;
