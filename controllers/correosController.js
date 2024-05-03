@@ -1,4 +1,4 @@
-const Correos = require('../models/Correos');
+const Correos = require('../models/CorreosModel');
 
 const getAllCorreos = async(req,res)=> {
 

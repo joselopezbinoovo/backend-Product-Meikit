@@ -1,6 +1,6 @@
 const {DataTypes}= require('sequelize');
 const sequelize = require('../db/connection');
-const groupCorreos = require('./GroupCorreos'); 
+const groupCorreos = require('./GroupCorreosModel'); 
 
 const correo =  sequelize.define("Correos",{
     id: {
