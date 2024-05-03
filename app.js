@@ -13,6 +13,9 @@ const valorPLC = require('./models/ValorPLCModel')
 const valariables = require('./models/VariablesModel')
 const historical = require('./models/HistoricalModel')
 const serverConnection = require('./models/ServerConnectionModel');
+const groupAlarms = require('./models/GroupAlarmsModel');
+const groupCorreos = require('./models/GroupCorreos');
+const correos = require('./models/Correos');
 
 const {getAllServerConn} = require('./controllers/serverConnController');
 
@@ -127,6 +130,9 @@ async function dbConnect(){
      // await User.sync({force:false});
      // await ValorOpcua.sync({force:false});
        //await historical.sync({force:false});
+      //await groupAlarms.sync({force:false});
+      //await  groupCorreos.sync({force:false});
+      //await  correos.sync({force:false});
     } catch (error) {
       console.error('Error al conectar con la base de datos:', error);
     }
