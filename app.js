@@ -52,6 +52,7 @@ const login = require('./routes/authRoute');
 const serverConnectionRouter = require('./routes/serverConnRoute')
 const correosRouter = require('./routes/correosRoute'); 
 const groupCorreosRouter = require('./routes/groupCorreosRoute');
+const groupAlarmsRouter = require('./routes/groupAlarmsRoute');
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/historical",historicalRouter);
@@ -62,6 +63,7 @@ app.use("/api/auth",login)
 app.use("/api/serverConn",serverConnectionRouter )
 app.use("/api/correos",correosRouter )
 app.use("/api/groupcorreos",groupCorreosRouter )
+app.use("/api/groupalarms",groupAlarmsRouter )
 
 async function main() {
   try {
