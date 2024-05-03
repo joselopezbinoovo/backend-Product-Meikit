@@ -8,7 +8,6 @@ const Sequelize = require('sequelize');
 const serverConnection = require('../models/ServerConnectionModel');
 
 
-
 const createEntity = async( req,res) => {
     try {
 

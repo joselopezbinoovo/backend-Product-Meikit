@@ -23,7 +23,10 @@ const variables = sequelize.define("Variables",{
       },
       monitoring: {
         type:DataTypes.BOOLEAN
-      } 
+      },
+      variableType: {
+        type: DataTypes.STRING
+      },
   },{
     timestamps:false,
     freezeTableName: true
