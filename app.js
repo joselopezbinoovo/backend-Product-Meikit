@@ -50,6 +50,7 @@ const roleRouter = require('./routes/rolesRoutes')
 const variable = require('./routes/variablesRoutes');
 const login = require('./routes/authRoute');
 const serverConnectionRouter = require('./routes/serverConnRoute')
+const correosRouter = require('./routes/correosRoute'); 
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/historical",historicalRouter);
@@ -58,7 +59,7 @@ app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
 app.use("/api/auth",login)
 app.use("/api/serverConn",serverConnectionRouter )
-
+app.use("/api/correos",correosRouter )
 
 
 async function main() {
