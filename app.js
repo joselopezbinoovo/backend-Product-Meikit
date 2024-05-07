@@ -14,8 +14,8 @@ const valariables = require('./models/VariablesModel')
 const historical = require('./models/HistoricalModel')
 const serverConnection = require('./models/ServerConnectionModel');
 const groupAlarms = require('./models/GroupAlarmsModel');
-const groupCorreos = require('./models/GroupCorreos');
-const correos = require('./models/Correos');
+const groupCorreos = require('./models/GroupCorreosModel');
+const correos = require('./models/CorreosModel');
 
 const {getAllServerConn} = require('./controllers/serverConnController');
 
@@ -50,6 +50,9 @@ const roleRouter = require('./routes/rolesRoutes')
 const variable = require('./routes/variablesRoutes');
 const login = require('./routes/authRoute');
 const serverConnectionRouter = require('./routes/serverConnRoute')
+const correosRouter = require('./routes/correosRoute'); 
+const groupCorreosRouter = require('./routes/groupCorreosRoute');
+const groupAlarmsRouter = require('./routes/groupAlarmsRoute');
 app.use("/api/entity",entityRouter);
 app.use("/api/entityConfig",entityConfigRouter);
 app.use("/api/historical",historicalRouter);
@@ -58,8 +61,9 @@ app.use("/api/rol",roleRouter)
 app.use("/api/variable",variable)
 app.use("/api/auth",login)
 app.use("/api/serverConn",serverConnectionRouter )
-
-
+app.use("/api/correos",correosRouter )
+app.use("/api/groupcorreos",groupCorreosRouter )
+app.use("/api/groupalarms",groupAlarmsRouter )
 
 async function main() {
   try {

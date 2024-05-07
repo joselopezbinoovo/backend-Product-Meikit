@@ -4,6 +4,67 @@ const ValorPLC = require('../models/ValorPLCModel');
 
 
 
+const getAllVariables = async (req, res) => {
+    try {
+        const variables = await Variable.findAll({
+            where: {
+                variableType: "variable"
+            },
+            order: [
+                ["id", "ASC"]
+            ],
+            include: [{
+                    model: ValorPLC,
+                },
+                {
+                    model: Entity,
+                },
+            ],
+        })
+
+        res.status(200).json({
+            msg: 'Variables recibidas',
+            data: variables
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+
+    }
+}
+const getAllAlarmas = async (req, res) => {
+    try {
+        const variables = await Variable.findAll({
+            where: {
+                variableType: "alarm"
+            },
+            order: [
+                ["id", "ASC"]
+            ],
+            include: [{
+                    model: ValorPLC,
+                },
+                {
+                    model: Entity,
+                },
+            ],
+        })
+
+        res.status(200).json({
+            msg: 'Variables recibidas',
+            data: variables
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+
+    }
+}
+
 const getAll = async (req, res) => {
     try {
         const variables = await Variable.findAll({
@@ -76,10 +137,12 @@ const create = async (req, res) => {
             selected:body.selected,
             id_entity: body.id_entity,
             monitoring:body.monitoring,
+            variableType:body.variableType,
+            id_group: body.id_group ? body.id_group : null,
             ValoresPLC: {
                 variableString: body.ValoresPLC.variableString,
                 variableName: body.ValoresPLC.variableName,
-                conectionString: body.ValoresPLC.conectionString
+                serverConnection: body.ValoresPLC.serverConnection
             }
         }, {
             include: [{
@@ -116,6 +179,8 @@ const update = async (req, res) => {
             selected:body.selected,
             id_entity: body.id_entity,
             monitoring:body.monitoring,
+            variableType:body.variableType,
+            id_group: body.id_group ? body.id_group : null,
         }, {
             where: {
                 id: id  
@@ -229,5 +294,7 @@ module.exports = {
     update,
     deleting,
     changeSelected,
-    updateBulking
+    updateBulking,
+    getAllAlarmas,
+    getAllVariables
 }
